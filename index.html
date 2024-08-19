@@ -49,9 +49,45 @@
       </div>
     </div>
 
+    <!-- Falling Paper Animation -->
+    <div id="falling-papers-container"></div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      function createFallingPaper() {
+        const shapes = ["circle", "leaf", "flower", "square"];
+        const colors = ["#FF6F61", "#FFD700", "#FF69B4", "#00FA9A", "#1E90FF"];
+        const sizes = ["10px", "15px", "20px", "25px", "30px"];
+
+        const paper = document.createElement("div");
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = sizes[Math.floor(Math.random() * sizes.length)];
+
+        paper.classList.add("falling-paper", shape);
+        paper.style.backgroundColor = color;
+        paper.style.width = size;
+        paper.style.height = size;
+
+        // Randomize start position
+        paper.style.left = Math.random() * 100 + "vw";
+        paper.style.animationDuration = Math.random() * 2 + 3 + "s";
+
+        document.getElementById("falling-papers-container").appendChild(paper);
+
+        // Remove the paper after the animation ends
+        setTimeout(() => {
+          paper.remove();
+        }, 5000);
+      }
+
+      function triggerFallingPapers() {
+        for (let i = 0; i < 100; i++) {
+          setTimeout(createFallingPaper, i * 100);
+        }
+      }
+
       function submitAnswer(answer) {
         document.getElementById("answerInput").value = answer;
 
@@ -59,6 +95,7 @@
         if (answer === "Yes") {
           message =
             "<h2>Yay! I'm so happy!</h2><p>Can't wait to start this wonderful journey together. 💖</p>";
+          triggerFallingPapers(); // Trigger the falling paper animation
         } else {
           message =
             "<h2>It's okay!</h2><p>I respect your feelings and appreciate your honesty. Let's still be friends! 😊</p>";
